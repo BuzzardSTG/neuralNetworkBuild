@@ -11,7 +11,7 @@ data = pd.read_csv("digit-recognizer/train.csv")
 data = np.array(data)
 m, n = data.shape
 np.random.shuffle(data)
-
+# spliting data into training and dev data
 data_dev = data[0:1000].T
 y_dev = data_dev[0]
 x_dev = data_dev[1:n]
@@ -26,7 +26,7 @@ _, m_train = x_train.shape
 
 # print(x_train[:, 0].shape)
 
-def init_params():  # def params
+def init_params():  # define params
     w1 = np.random.rand(10, 784)
     b1 = np.random.rand(10, 1)
     w2 = np.random.rand(10, 10)
@@ -38,12 +38,12 @@ def ReLU(z):  # activation algo
     return np.maximum(z, 0)
 
 
-def softmax(z):
+def softmax(z): # hidden - output prob.
     a = np.exp(z) / sum(np.exp(z))
     return a
 
 
-def forward_prop(w1, b1, w2, b2, x):
+def forward_prop(w1, b1, w2, b2, x): #forward propagation definition
     z1 = w1.dot(x) + b1
     a1 = ReLU(z1)
     z2 = w2.dot(a1) + b2
@@ -51,7 +51,7 @@ def forward_prop(w1, b1, w2, b2, x):
     return z1, a1, z2, a2
 
 
-def one_hot(y):
+def one_hot(y): #crates new matrix
     one_hot_y = np.zeros((y.size, y.max() + 1))  # y.size - m
     one_hot_y[np.arange(y.size), y] = 1
     one_hot_y = one_hot_y.T
@@ -90,13 +90,13 @@ def get_accuracy(predictions, y):
     return np.sum(predictions == y) / y.size
 
 
-def grad_d(x, y, iterations, alpha):
+def grad_d(x, y, iterations, alpha): # gradual descend
     w1, b1, w2, b2 = init_params()
     for i in range (iterations):
         z1, a1, z2, a2 = forward_prop(w1, b1, w2, b2, x)
         dw1, db1, dw2, db2 = back_prop(z1, a1, z2, a2, w1, w2, x, y)
         w1, b1, w2, b2 = update_params(w1, b1, w2, b2, dw1, db1, dw2, db2, alpha)
-        if i % 10 == 0:
+        if i % 10 == 0: #progress bar every tenth iteration
             print("Iteration: ", i)
             predictions = get_predictions(a2)
             print(get_accuracy(predictions, y))
@@ -104,3 +104,25 @@ def grad_d(x, y, iterations, alpha):
 
 
 w1, b1, w2, b2 = grad_d(x_train, y_train, 500, 0.1)
+
+def make_predictions(x, w1, b1, w2, b2):
+    _, _, _, a2 = forward_prop(w1, b1, w2, b2, x)
+    predictions = get_predictions(a2)
+    return predictions
+
+def test_prediction (index, w1, b1, w2, b2):
+    current_image = x_train[:, index, None]
+    prediction = make_predictions(x_train[:, index, None], w1, b1, w2, b2)
+    label = y_train[index]
+    print("Prediction: ", prediction)
+    print("Label: ", label)
+
+    current_image = current_image.reshape((28, 28)) * 255
+    plt.gray()
+    plt.imshow(current_image, interpolation='nearest')
+    plt.show()
+
+#test_prediction(8, w1, b1, w2, b2)
+
+dev_predictions = make_predictions(x_dev, w1, b1, w2, b2)
+get_accuracy(dev_predictions, y_dev)
