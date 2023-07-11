@@ -124,5 +124,5 @@ def test_prediction (index, w1, b1, w2, b2):
 
 #test_prediction(8, w1, b1, w2, b2)
 
-dev_predictions = make_predictions(x_dev, w1, b1, w2, b2)
-get_accuracy(dev_predictions, y_dev)
+"""dev_predictions = make_predictions(x_dev, w1, b1, w2, b2)
+get_accuracy(dev_predictions, y_dev)"""
