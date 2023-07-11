@@ -122,7 +122,7 @@ def test_prediction (index, w1, b1, w2, b2):
     plt.imshow(current_image, interpolation='nearest')
     plt.show()
 
-test_prediction(145, w1, b1, w2, b2)
+test_prediction(100, w1, b1, w2, b2)
 
 """dev_predictions = make_predictions(x_dev, w1, b1, w2, b2)
 get_accuracy(dev_predictions, y_dev)"""
