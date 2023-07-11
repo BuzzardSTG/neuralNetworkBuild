@@ -1,4 +1,4 @@
-# building the neural network for image recognitipn, based on Digit Rocognizer
+# building the neural network for image recognition, based on Digit Rocognizer
 
 import numpy as np
 import pandas as pd
@@ -90,7 +90,7 @@ def get_accuracy(predictions, y):
     return np.sum(predictions == y) / y.size
 
 
-def grad_d(x, y, iterations, alpha): # gradual descend
+def grad_d(x, y, iterations, alpha): # gradient descend
     w1, b1, w2, b2 = init_params()
     for i in range (iterations):
         z1, a1, z2, a2 = forward_prop(w1, b1, w2, b2, x)
@@ -122,7 +122,7 @@ def test_prediction (index, w1, b1, w2, b2):
     plt.imshow(current_image, interpolation='nearest')
     plt.show()
 
-#test_prediction(8, w1, b1, w2, b2)
+test_prediction(145, w1, b1, w2, b2)
 
 """dev_predictions = make_predictions(x_dev, w1, b1, w2, b2)
 get_accuracy(dev_predictions, y_dev)"""
